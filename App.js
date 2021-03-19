@@ -25,14 +25,10 @@ const wait = timeout => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
 const App = () => {
-  // console.log(windowWidth, windowHeight);
-  // console.log(Platform.Version);
-  // const [isEnabled, setIsEnabled] = useState(false);
-  // const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const [refreshing, setRefreshing] = React.useState(false);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    wait(2000).then(() => setRefreshing(false)); //! bisa diganti dengan axios
+    wait(2000).then(() => setRefreshing(false));
   }, []);
   const [data] = useState([
     {
@@ -210,7 +206,6 @@ const App = () => {
         </View>
         <View
           style={{
-            // height: windowHeight / 3,
             backgroundColor: 'white',
             borderTopRightRadius: 10,
             borderTopLeftRadius: 10,
@@ -265,7 +260,6 @@ const App = () => {
           </ListItem>
         </View>
       </ScrollView>
-      {/* nav button start */}
       <View
         style={{
           backgroundColor: 'white',
