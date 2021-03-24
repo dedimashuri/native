@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 
 export default function Bookscreen({navigation, route}) {
+  // tanpa destructuring props.route
 
   const password = useRef();
   return (
@@ -35,6 +36,7 @@ export default function Bookscreen({navigation, route}) {
             ref={password}
             placeholder="password"
             style={styles.textInput}
+            // onSubmitEditing={e => console.log(e.target)}
           />
         </View>
       </TouchableWithoutFeedback>

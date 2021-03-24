@@ -44,6 +44,10 @@ const HomeTab = () => {
             }
             return <Icon name={iconName} color={color} size={size} />;
           },
+          // tabBarLabel: ({focused, color}) => {
+          //   // You can return any component that you like here!
+          //   return null;
+          // },
         };
       }}
       tabBarOptions={{
@@ -57,5 +61,6 @@ const HomeTab = () => {
     </BottomTab.Navigator>
   );
 };
+
 
 export default HomeTab;

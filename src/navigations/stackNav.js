@@ -2,6 +2,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {View, Text, Button} from 'react-native';
 import HomeTab from './HomeTab';
+import DetailScreen from '../screens/detailscreen';
 const Stack = createStackNavigator();
 
 function ReimbursementScreen({navigation}) {
@@ -20,6 +21,7 @@ function ReimbursementScreen({navigation}) {
 }
 
 function ReqScreen({navigation, route}) {
+  // tanpa destructuring props.route
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <Text>Req Screen {route.params?.nama} </Text>
@@ -38,21 +40,6 @@ function ReqScreen({navigation, route}) {
   );
 }
 
-function WalletScreen({navigation}) {
-  return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Wallet Screen</Text>
-      <Button title="ke home" onPress={() => navigation.navigate('Home')} />
-      <Button title="wallet push" onPress={() => navigation.push('wallet')} />
-      <Button
-        title="wallet navigate"
-        onPress={() => navigation.navigate('Wallet')}
-      />
-      <Button title="go Back navigate" onPress={() => navigation.goBack()} />
-    </View>
-  )
-}
-
 const StackNav = () => {
   return (
     <Stack.Navigator>
@@ -62,11 +49,15 @@ const StackNav = () => {
         options={{headerShown: false}}
       />
       <Stack.Screen name="Reim" component={ReimbursementScreen} />
-      <Stack.Screen name="wallet" component={WalletScreen} />
+      <Stack.Screen
+        name="Detail"
+        options={{headerShown: false}}
+        component={DetailScreen}
+      />
       <Stack.Screen
         name="Req"
         component={ReqScreen}
-        initialParams={{nama: 'jhon'}}
+        initialParams={{nama: 'doni'}}
         options={({route}) => ({
           title: route.params.nama,
           headerStyle: {

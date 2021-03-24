@@ -17,9 +17,9 @@ import {
 import {Icon, Badge, ListItem} from 'react-native-elements';
 import {styles} from '../styles';
 import {MenuIcon} from '../components';
-
+import {useSelector} from 'react-redux';
 const windowHeight = Dimensions.get('screen').height;
-
+var angka = 0;
 const Home = props => {
   const [data] = useState([
     {
@@ -28,7 +28,7 @@ const Home = props => {
       text: 'wallet',
     },
     {
-      name: 'article',
+      name: 'description',
       color: 'salmon',
       text: 'article',
     },
@@ -64,34 +64,48 @@ const Home = props => {
     },
   ]);
 
-  const [back, setback] = useState(0);
-
   const backAction = () => {
-    if (back === 0) {
-      setback(1);
-      ToastAndroid.show('1 click back again if you wanna back', 3000);
+    //using alert
+    // Alert.alert('Hold on!', 'Are you sure you want to go back?', [
+    //   {
+    //     text: 'Cancel',
+    //     onPress: () => ,
+    //     style: 'cancel',
+    //   },
+    //   {text: 'YES', onPress: () => BackHandler.exitApp()},
+    // ]);
+
+    // using toast
+    if (angka === 0) {
+      angka = 1;
+      ToastAndroid.show('1 click back again if you wanna back', 2000);
     } else {
       BackHandler.exitApp();
     }
-    console.log(back);
 
-    return true;
+    return true; //jangan lupa returnnya true
   };
 
   useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', backAction);
-
-    return () =>
+    const unsubscribe = props.navigation.addListener('focus', () => {
+      // Screen was focused
+      // Do something
+      angka = 0;
+      BackHandler.addEventListener('hardwareBackPress', backAction);
+    });
+    props.navigation.addListener('blur', () => {
       BackHandler.removeEventListener('hardwareBackPress', backAction);
-  }); 
+    });
+
+    return () => unsubscribe;
+  }, [props.navigation]); //component didmount
+  // console.log(back);
 
   const OnReimbursePress = () => {
     props.navigation.push('Reim');
   };
 
-  const OnWalletPress = () => {
-    props.navigation.push('wallet');
-  };
+  const {username} = useSelector(state => state.Auth);
 
   const renderMenu = () => {
     return data.map((val, index) => {
@@ -116,7 +130,7 @@ const Home = props => {
             }}>
             <View>
               <Text style={{fontSize: 30, color: 'white', fontWeight: '700'}}>
-                Michael Scott
+                {username}
               </Text>
               <Text style={{color: 'white'}}>General Manager</Text>
             </View>
@@ -169,7 +183,7 @@ const Home = props => {
               </View>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback
-              onPress={() => props.navigation.navigate('Req', {nama: 'james'})}>
+              onPress={() => props.navigation.navigate('Req', {nama: 'willy'})}>
               <View
                 style={{
                   backgroundColor: 'white',
@@ -185,7 +199,7 @@ const Home = props => {
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}>
-                  <Icon name="calendar-today" color="gray" />
+                  <Icon name="today" color="gray" />
                 </View>
                 <View style={{flex: 5, justifyContent: 'center'}}>
                   <Text style={{fontSize: 12}}>Request</Text>
@@ -193,34 +207,33 @@ const Home = props => {
                 </View>
               </View>
             </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={OnWalletPress}>
+            <View
+              style={{
+                backgroundColor: 'white',
+                height: 60,
+                width: 200,
+                marginHorizontal: 5,
+                flexDirection: 'row',
+                borderRadius: 5,
+              }}>
               <View
                 style={{
-                  backgroundColor: 'white',
-                  height: 60,
-                  width: 200,
-                  marginHorizontal: 5,
-                  flexDirection: 'row',
-                  borderRadius: 5,
+                  flex: 2,
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}>
-                <View
-                  style={{
-                    flex: 2,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <Icon name="alarm" color="gray" />
-                </View>
-                <View style={{flex: 5, justifyContent: 'center'}}>
-                  <Text style={{fontSize: 12}}>Request</Text>
-                  <Text>Overtime</Text>
-                </View>
+                <Icon name="alarm" color="gray" />
               </View>
-            </TouchableWithoutFeedback>
+              <View style={{flex: 5, justifyContent: 'center'}}>
+                <Text style={{fontSize: 12}}>Request</Text>
+                <Text>Overtime</Text>
+              </View>
+            </View>
           </ScrollView>
         </View>
         <View
           style={{
+            // height: windowHeight / 3,
             backgroundColor: 'white',
             borderTopRightRadius: 10,
             borderTopLeftRadius: 10,
